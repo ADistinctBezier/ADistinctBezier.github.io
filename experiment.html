@@ -1,0 +1,49 @@
+<html>
+  <head>
+    <title>ADB Experiment Page</title>
+    <style>
+      body {
+        background:            linear-gradient(to bottom, white, darkblue);
+        background-attachment: fixed; /*edit*/
+      }
+    </style>
+  </head>
+  <body>
+    <p>'?' indicates an optional field.</p>
+    <label for="name">Name?:</label>
+    <input type="text" id="name" name="name"><br><br>
+    <label for="message">Message:</label>
+    <textarea id="message" name="message" rows="4" cols="50"></textarea><br><br>
+    <label for="captcha">CAPTCHA (For security reasons, enter the text that appear in the image below):</label>
+    <input type="text" id="captcha" name="captcha"><br><br>
+    <img src="cap.jpg" alt=""><br><br>
+    <button type="button" onclick="send()">Send</button>
+  </body>
+  <script>
+    function send(){
+        let name = document.getElementById("name").value;
+        if(name === "")
+            name = "Anonymous";
+
+        let message = document.getElementById("message").value;
+        let captcha = document.getElementById("captcha").value;
+
+        let embeds = []
+        embeds.push(
+            {
+                type: "rich",
+                description:`${message}`,
+                footer:{text: `${captcha}`}
+            }
+        );
+
+        var xhr = new XMLHttpRequest();
+        xhr.open("POST", "https://discord.com/api/webhooks/1276515310505033800/zQvppG6BsH5vvCe4MgybhBYqlJ3WsX2OFbossU5JK-Hg303vZdzSKZJVQYhofX9jZ470", true);
+        xhr.setRequestHeader('Content-Type', 'application/json');
+        xhr.send(JSON.stringify({
+            username: `${name}`,
+            embeds: embeds
+        }));
+    }
+  </script>
+</html>
